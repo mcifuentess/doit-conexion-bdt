@@ -1,0 +1,47 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class UserData : MonoBehaviour
+{
+    private string getUrlEscribir = "tadeolabhack.com:8081/test/Datos/phpMariana/escribir.php";
+    // Start is called before the first frame update
+    
+    private string nombreTutor ="" ;
+    private string apellidoTutor = "" ;
+    private int celularTutor = 0;
+    private string contrasenaTutor = "";
+
+    public InputField campoNombre;
+    public InputField campoApellido;
+    public InputField campoCelular;
+    public InputField campoContrasena;
+
+    public void SendData()
+    {
+        StartCoroutine(enviarDatosUsuario());
+    }
+    private IEnumerator enviarDatosUsuario()
+    {
+        nombreTutor = campoNombre.text;
+        apellidoTutor = campoApellido.text;
+
+        celularTutor = int.Parse(campoCelular.text);
+        contrasenaTutor = campoContrasena.text;
+
+        print(nombreTutor + " " + apellidoTutor + " " + celularTutor + " " + contrasenaTutor);
+
+        WWWForm form = new WWWForm();
+        form.AddField("nom", nombreTutor);
+        form.AddField("ape", apellidoTutor);
+        form.AddField("cel", celularTutor);
+        form.AddField("cont", contrasenaTutor);
+
+        WWW retroalimentacion = new WWW(getUrlEscribir, form);
+        yield return retroalimentacion;
+
+        print(retroalimentacion.text);
+    }
+
+}
